@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <canvas id="demo" width=500 height=500></canvas>
+    <script src="morph.js"></script>
+    <script>
+      var img = morph.generateRandomImage(500, 500, 100000);
+      var structElem = morph.generateStructureElement(10);
+      var morphResult = morph.dilate(img, structElem);
+
+      var canvas = document.getElementById('demo');
+      morph.drawImage(morphResult, canvas);
+    </script>
+  </body>
+</html>
