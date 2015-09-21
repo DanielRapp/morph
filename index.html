@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="libs/pure-min.css">
+  </head>
+  <body>
+    <div class="content">
+      <h1>Morphological image processing</h1>
+      <p>
+        Here's a cool little topic.
+        Let's think about how to extract borders in an
+        image.
+        I'm sure you could think of hundreds
+        of heuristics, but I'd like to discuss
+        one particular heuristic that, indirectly,
+        leads to some pretty cool results relating to cellular automata.
+      </p>
+      <p class="canvas-demo">
+        <canvas id="demo1"></canvas>
+        <canvas id="demo2"></canvas>
+      </p>
+      <p>
+        The technique is called "morphology", and it's
+        one of those ideas which starts out with very simple
+        rules, but, when the rules are composed, can yield
+        complex behaviour.
+      </p>
+      <p>
+        The central components in morphology are that of
+        a <i>union</i>, <i>complement</i> and
+        <i>erosion</i> of images.
+        We'll only be working with pure black-and-white
+        images here, but this can all be extended (with
+        some effort) to grayscale and color images.
+        If we represent images $A$ and $B$ as
+        the set of coordinate-pairs for all black pixels,
+        then $A\cup B$ is the normal set union, the resulting image being a "combination" of both.
+        The complement, $A^c$, just flips black pixels to white, and white pixels to black.
+        Here are some examples
+      </p>
+      <p>
+        <canvas id="union1" class="canvas13"></canvas>
+        <span class="symbol">$\cup$</span>
+        <canvas id="union2" class="canvas13"></canvas>
+        <span class="symbol">$=$</span>
+        <canvas id="union3" class="canvas13"></canvas>
+      </p>
+      <p>
+      and
+      </p>
+      <p id="complement">
+        <canvas id="compl1"></canvas>
+        <span class="symbol-high" style="font-size: 150%">$^c$</span>
+        <span class="symbol">$=$</span>
+        <canvas id="compl2"></canvas>
+      </p>
+
+      <h2>Erosion</h2>
+      <p>
+        Erosion, however, is an operation which
+        takes a normal image $A$, and a so called <i>structure element</i>, $S$,
+        to produce a new image $B$.
+        A structure element is a just small mini-image, typically
+        something like a $3\times 3$ set of black pixels.
+        The erosion, $A\ominus S$, then, is the act
+        of placing the center of the structure element (or some
+        arbitrarily center-replacement if the width
+        is even) at each pixel of the input image $A$ and asking "does
+        this local image patch look identical to the structure element?".
+        If the answer is yes, a black pixel is placed on that
+        position of output image.
+      </p>
+      <p>
+        Formally, you could express this operation as
+        $$ A\ominus S = \Big\{ (x,y)\ |\ S_{(x,y)}\subset A \Big\} $$
+        where $S_{(x,y)} = \{ (x+i,y+j)\ |\ (i,j)\in S \}$ is just the translation of $S$ to
+        postion $(x,y)$. (Here we're using the version which translates the upper-left-corner,
+        but I'll leave it as an exercise to express how to translate from the center.)
+      </p>
+      <p>
+       Here's an example:
+      </p>
+      <p>
+        <canvas id="er1" class="canvasStruct"></canvas>
+        <span class="symbol">$\ominus$</span>
+        <canvas id="er2" class="struct canvasStruct"></canvas>
+        <span class="symbol">$=$</span>
+        <canvas id="er3" class="canvasStruct"></canvas>
+      </p>
+
+      <h2>Dilation</h2>
+      <p>
+        With these basic components we could start defining
+        higher-order operations. I'll only cover <i>dilation</i>,
+        which is simply
+        $$ A\oplus S = (A^c \ominus S)^c $$
+        As the name implies, this operation sort of "expands" the objects
+        in the image
+      </p>
+      <p>
+        <canvas id="di1" class="canvasStruct"></canvas>
+        <span class="symbol">$\oplus$</span>
+        <canvas id="di2" class="struct canvasStruct"></canvas>
+        <span class="symbol">$=$</span>
+        <canvas id="di3" class="canvasStruct"></canvas>
+      </p>
+
+      <h2>Borders</h2>
+      <p>
+        We don't actually need higher-order operations
+        to
+        solve the original problem
+        posed. How do you use this to
+        extract borders? The solution is natural
+        in this algebra of images that we've developed
+        $$ \beta(A) = A - A\ominus S $$
+        where $X-Y = X\cap Y^c = (X^c\cup Y)^c $.
+        In other words, just contract the objects
+        in the image slightly, and then look
+        at the difference between the original image and the result.
+      </p>
+      <p id="border">
+        <span class="symbol">$\beta$</span>
+        <span class="symbol-paren" style="font-size: 300%">$\Bigg($</span>
+        <canvas id="border1" class="canvas13"></canvas>
+        <span class="symbol-paren" style="font-size: 300%">$\Bigg)$</span>
+        <span class="symbol">$= $</span>
+        <canvas id="border2" class="canvas13"></canvas>
+      </p>
+    </div>
+
+    <div class="transition">
+      <div class="content">
+        <h2>Hacking in cellular automata</h2>
+        <p>
+          Now for the cool part. While these operations
+          were originally intended for processing images,
+          it turns out that they have a huge
+          expressive power when composed (in fact they're turing complete).
+        </p>
+        <p>
+          Recall the rules for game of life. We'll only need
+          those rules which result
+          in a cell-activation in the next generation. The first is "<i>if there are two
+          or three live neigbours, the cell lives on</i>", and the second "<i>any
+          dead cell with exactly three live neighbours is born</i>".
+        </p>
+        <p>
+          Notice the connection between this and erosion.
+          Erosion <i>activates</i> a pixel in the output image
+          if a perfect match with the structure element is found.
+        </p>
+        <p>
+          Let $S_1, \dots, S_k$ be the permutations
+          of neighbourhoods which satisfy the first rule,
+          i.e.
+          $S_1 =$<img src="img/rule1.png" id="gol-rule-1" class="gol-rule" />,
+          $S_2 =$<img src="img/rule2.png" id="gol-rule-2" class="gol-rule" />,
+          $S_3 =$<img src="img/rule3.png" id="gol-rule-3" class="gol-rule" />,$\dots$,
+          and $S_{k+1}, \dots, S_n$ those which satisfy the second
+          rule.
+        </p>
+        <p>
+          Using these patterns as structure elements, the awesome thing is that we can now express
+          an iteration of game of life $G(A)$ as in closed-form
+          using the language of morphlogy! So
+          $$ G(A) = (A\ominus S_1) \cup (A\ominus S_2) \cup \cdots \cup (A\ominus S_n). $$
+        </p>
+
+        <h2>Randomized cellular automata</h2>
+        <p>
+          But you've probably already seen game of life in all shapes and sizes
+          of starting conditions. Instead, notice how this leads to a natural
+          generalization to other kinds of cellular automata. Why use
+          those particular $S_1, \dots, S_n$ rules specified by game of life?
+          Why not use a different combination of rules?
+        </p>
+        <p>
+          Below I'm using a set of random structure elements (which are
+          themselves randomized every once in a while to show you the full range
+          of what can be expressed), in order to produce the following
+        </p>
+        <p id="border">
+          <span id="gol-symbol" class="symbol">G</span>
+          <span class="symbol-paren" style="font-size: 300%">$\Bigg($</span>
+          <canvas id="gol1" class="canvas13"></canvas>
+          <span class="symbol-paren" style="font-size: 300%">$\Bigg)$</span>
+          <span class="symbol">$= $</span>
+          <canvas id="gol2" class="canvas13"></canvas>
+        </p>
+      </div>
+    </div>
+    <div class="content extra">
+      <p>
+        If you'd like to play with this yourself, check out <a href="https://github.com/DanielRapp/morph">this</a> small companion library.
+        In fact, this is essentially all that's needed to do border-extraction:
+      </p>
+      <pre><code class="javascript">
+        var S = morph.generateStructureElement(3);
+        var eroded = morph.erode( image, S );
+        var border = morph.subtract( image, eroded );
+      </code></pre>
+      <div id="author">
+        Written by <a href="https://github.com/DanielRapp">Daniel Rapp</a>.
+        Check out the code for this <a href="https://github.com/DanielRapp/morph">on Github</a>.
+      </div>
+    </div>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="morphology.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

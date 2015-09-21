@@ -1,4 +1,4 @@
-window.morph = (function(window) {
+window.morphology = (function(window) {
 
   var generateRndImage = function(sizeWidth, sizeHeight, iters) {
     var iters = iters || 50000;
@@ -10,6 +10,7 @@ window.morph = (function(window) {
       }
     }
 
+    //var pos = [ ~~(sizeWidth/2), ~~(sizeHeight/2) ];
     var pos = [ Math.floor(sizeWidth/2+Math.random()*sizeWidth/3-sizeWidth/6), Math.floor(sizeHeight/2+Math.random()*sizeHeight/3-sizeHeight/6) ];
     for (var i = 0; i < iters; i++) {
       res[pos[0]][pos[1]] = 1;
@@ -197,7 +198,6 @@ window.morph = (function(window) {
     intersection: intersection,
     open: open,
     close: close,
-    subtract: subtract,
     boundary: boundary,
     generateRandomGOLStructs: genGolStructs,
     gol: gol,

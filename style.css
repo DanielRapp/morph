@@ -1,0 +1,153 @@
+canvas {
+  /*box-shadow: 0px 1px 6px -1px rgba(68,68,68,1);*/
+  border: 1px solid #000;
+  width: 300px;
+  height: 200px;
+}
+
+.canvas13 {
+  /*box-shadow: 0px 1px 6px -1px rgba(68,68,68,1);*/
+  border: 1px solid #000;
+  width: 200px;
+  height: 200px;
+}
+
+
+h1, h2 {
+  font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 45px !important;
+  margin-left: -3px;
+  margin-bottom: 0px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: rgba(0,0,50,1);
+}
+
+h2 {
+  font-size: 30px !important;
+  margin-top: 50px !important;
+}
+
+h3 {
+  color: rgba(0,0,50,1);
+  margin-top: 40px !important;
+}
+
+#author {
+  text-align: center;
+  font-style: italic;
+  font-size: 15px;
+  margin-top: 100px;
+  font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+  padding-top: 50px;
+  border-top: 1px solid #555;
+}
+
+.content {
+  width: 710px;
+  margin: auto;
+  padding-left: 10px;
+  font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+  letter-spacing: 0.01rem;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1.5;
+  margin-top: 30px;
+  /*margin-bottom: 150px;*/
+}
+
+.content > p {
+  margin-left: 30px;
+}
+
+.extra {
+  margin-top: 100px;
+  margin-bottom: 150px;
+}
+
+.canvas-demo {
+  padding-left: 15px;
+}
+
+.symbol {
+  position: relative;
+  bottom: 90px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.symbol-high {
+  position: relative;
+  bottom: 183px;
+}
+
+.symbol-paren {
+  position: relative;
+  bottom: 85px;
+}
+
+#complement {
+  padding-left: 8px;
+}
+
+#er2, #di2 {
+  width: 6px;
+  height: 6px;
+  position: relative;
+  /*bottom: 85px;*/
+  bottom: 92px;
+}
+
+.canvasStruct {
+  width: 290px;
+  height: 200px;
+}
+
+#border {
+  padding-left: 30px;
+}
+
+.transition {
+  width: 100%;
+  /*background-color: rgba(0,0,255,0.88);*/
+  background-color: #7FDBFF;
+  padding-top: 10px;
+  margin-top: -30px;
+  margin-bottom: -10px;
+  border-top: 15px solid #0074D9;
+  border-bottom: 15px solid #0074D9;
+
+  /*color: #000;*/
+  color: hsla(197, 100%, 10%, 1.0);
+}
+
+.transition canvas {
+  border: 1px solid #000 !important;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.struct {
+  background: #000;
+}
+
+.list {
+  padding-left: 70px;
+}
+
+#gol-symbol {
+  font-family: 'Andale Mono';
+}
+
+.gol-rule {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  bottom: -5px;
+  margin-left: 6px;
+  margin-right: 3px;
+  background-color: #fff;
+  border: 1px #000 solid;
+}
